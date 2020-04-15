@@ -22,7 +22,7 @@
 		</button>    
 		<div class="collapse navbar-collapse" id="main-navigation">     
 			<ul class="navbar-nav">      
-				<li><a class="nav-link" href="page_principale.html">Accueil</a></li>
+				<li><a class="nav-link" style="color: white;" href="page_principale.html">Accueil</a></li>
 				<div class="dropdown">
 					<button class="dropbtn">Catégories</button>
 					<div class="dropdown-content">
@@ -47,14 +47,38 @@
 		</div>  
 	</nav> 
 
-	<header class="page-header header container-fluid">   
-		<div class="overlay"></div>   
-		<div class="description">    
-			<h1>Bienvenue sur la page de ECEBay Paris!</h1>     
-			<p>     La référence de l'enchère en ligne à Paris. <br>	La plus grande collection de voitures de luxes en France     </p>     
-			<button class="btn btn-outline-secondary btn-lg">Dites m'en plus!</button>   
-		</div>  
-	</header> 
+	<div class="row" style="margin: 40px;">
+		<div class="col-sm-4">
+			<h3><a href="page_filtree.php">Enchères</a></h3>
+			<?php
+			for($i = 0; $i < 10; $i++) {
+			?>
+			<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+			<p style="color: white;">Nom<br>Prix</p><?php
+			}
+			?>
+		</div>
+		<div class="col-sm-4"> 
+			<h3><a href="page_filtree.php">Achetez-le maintenant</a></h3>
+			<?php
+			for($i = 0; $i < 10; $i++) {
+			?>
+			<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+			<p style="color: white;">Nom<br>Prix</p> <?php
+			}
+			?>   
+		</div>
+		<div class="col-sm-4"> 
+			<h3><a href="page_filtree.php">Meilleure Offre</a></h3>
+			<?php
+			for($i = 0; $i < 10; $i++) {
+			?>
+			<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+			<p style="color: white;">Nom<br>Prix</p>  <?php
+			}
+			?>   
+		</div>
+	</div>
 
 </body> 
-</html> 
+</html>

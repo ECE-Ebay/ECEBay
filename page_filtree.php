@@ -11,7 +11,7 @@
 	<script type="text/javascript">   
 		$(document).ready(function(){     
 			$('.header').height($(window).height());    
-		});  
+		}); 
 	</script> 
 </head> 
 <body>  
@@ -47,14 +47,18 @@
 		</div>  
 	</nav> 
 
-	<header class="page-header header container-fluid">   
-		<div class="overlay"></div>   
-		<div class="description">    
-			<h1>Bienvenue sur la page de ECEBay Paris!</h1>     
-			<p>     La référence de l'enchère en ligne à Paris. <br>	La plus grande collection de voitures de luxes en France     </p>     
-			<button class="btn btn-outline-secondary btn-lg">Dites m'en plus!</button>   
-		</div>  
-	</header> 
+	<div class="container-fluid">
+		<div class="row" style="margin: 40px;">
+			<?php
+			for($i = 0; $i < 10; $i++) {
+			?>
+			<div class="col-sm-12" style="height:250px; border-color:red; "><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="height: 230px; width: 400px; margin-top: 10px; margin-right: 50px; float: left;" alt="Image">
+			<p style="color: white;"><br>Nom: <br><br>Qualitées: <br><br>Défauts: <br><br>Prix: </p></div>
+			<?php
+			}
+			?>
 
+		</div>
+	</div>
 </body> 
-</html> 
+</html>
