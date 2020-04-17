@@ -53,6 +53,7 @@ if(isset($_POST['formconnexion']))
                 <input type="email" name="mailconnect" placeholder="Mail" />
                 <input type="password" name="mdpconnect" placeholder="Mot de passe" />
                 <input type="submit" name='formconnexion' value="je me connecte"/>
+                <a href="inscription1.php"><input type="button" name='inscription' value="inscription"/></a>
             </form>
             <?php
             if(isset($erreur))
