@@ -22,43 +22,91 @@
 		</button>    
 		<div class="collapse navbar-collapse" id="main-navigation">     
 			<ul class="navbar-nav">      
-				<li><a class="nav-link" href="page_principale.html">Accueil</a></li>
 				<div class="dropdown">
-					<button class="dropbtn">Catégories</button>
+					<a href="page_choix.html"><button class="dropbtn">Catégories</button></a>
 					<div class="dropdown-content">
-						<a href="page_categories.php">Ferraille ou Trésor</a>
-						<a href="page_categories.php">Bon pour le Musée</a>
-						<a href="page_categories.php">Accessoire VIP</a>
-					</div>
-				</div>
-				<div class="dropdown">
-					<button class="dropbtn">Achat</button>
-					<div class="dropdown-content">
-						<a href="page_type_vente.php">Enchères</a>
-						<a href="page_type_vente.php">Achetez-le maintenant</a>
-						<a href="page_type_vente.php">Meilleure offre</a>
+						<a href="page_categories.php?categorie=1">Voiture de luxe</a>
+						<a href="page_categories.php?categorie=2">Voiture d'occasion</a>
+						<a href="page_categories.php?categorie=3">Pièces détachées</a>
 					</div>
 				</div>   
-				<li class="nav-item"><a class="nav-link" href="#">Vendre</a></li> 
-				<li class="nav-item"><a class="nav-link" href="#">Votre compte</a></li> 
+				<li class="nav-item" style="margin-right: 30px;"><a class="nav-link" href="#">Votre compte</a></li> 
 				<li class="nav-item"><a class="nav-link" href="#">Panier</a></li> 
-				<li class="nav-item"><a class="nav-link" href="#">Admin</a></li> 
 			</ul>    
 		</div>  
 	</nav> 
-
 	<div class="container-fluid">
 		<div class="row" style="margin: 40px;">
 			<?php
-			for($i = 0; $i < 10; $i++) {
-			?>
-			<div class="col-sm-12" style="height:250px; border-color:red; "><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="height: 230px; width: 400px; margin-top: 10px; margin-right: 50px; float: left;" alt="Image">
-			<p style="color: white;"><br>Nom: <br><br>Qualitées: <br><br>Défauts: <br><br>Prix: </p></div>
-			<?php
+			$car = 0;
+			try
+			{
+				$bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8', 'root', '');
 			}
-			?>
+			catch(Exception $e)
+			{
+				die('Erreur : '.$e->getMessage());
+			}
 
-		</div>
-	</div>
-</body> 
-</html>
+			$reponse = $bdd->query('SELECT * FROM items');
+			$req = $bdd->query('SELECT * FROM photos');
+			
+			while ($donnees = $reponse->fetch())
+			{
+				if (isset($_GET['categorie'])&&isset($_GET['type_vente']))  
+				{  
+					$categorie = $_GET['categorie'];
+					$type_vente = $_GET['type_vente'];
+				}  
+				else  
+				{  
+					echo "ce membre n'existe pas.";  
+				}  
+				
+				if ($donnees['categorie']==$categorie&&$donnees['type_vente']==$type_vente) {
+					?>
+
+
+					<div class="col-sm-12" style="height:250px; border-color:red; ">
+						<div class="col-sm-4" style="float: left; text-align: center;">
+							<div id="myCarousel" class="carousel slide" data-ride="carousel" >
+
+								<!-- The slideshow -->
+								<div class="carousel-inner">
+									<div class="carousel-item active">
+										<?php while ($don = $req->fetch())
+										{
+											if ($donnees['id_item']==$don['id_item'])  
+											{  
+												echo('<img style="height: 200px; width: auto;" src="' . $don['src'] . '" />');
+												$car = $car + 1;
+											} }?>
+										</div>
+										
+									</div>
+
+									<!-- Carousel controls -->
+									<?php if($car>1) { ?>
+									<a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+										<span class="carousel-control-prev-icon"></span>
+									</a>
+									<a class="carousel-control-next" href="#myCarousel" data-slide="next">
+										<span class="carousel-control-next-icon"></span>
+									</a>
+								<?php } ?>
+								</div>
+							</div>
+							<p style="color: white;"><br>Marque: <?php echo $donnees['marque']; ?><br><br>Modèle: <?php echo $donnees['modele']; ?><br><br>Qualitées: <?php echo $donnees['description']; ?><br><br>Prix: <?php echo $donnees['prix_initial']; ?></p>
+						</div>
+
+
+
+						<?php
+					}}
+					$reponse->closeCursor();
+					?>
+
+				</div>
+			</div>
+		</body> 
+		</html>
