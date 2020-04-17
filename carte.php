@@ -2,6 +2,8 @@
 
 session_start();
 
+$id_membre=$_SESSION['id'];
+
 $bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
 
 if(isset($_POST['formcarte']))
@@ -24,8 +26,8 @@ if(isset($_POST['formcarte']))
 
 
 
-      $insertmbr= $bdd->prepare("INSERT INTO carte_banquaire(nom, prenom, email, adresse, ville, numtel, zip, numerocarte, nomcarte, moicarte, anneecarte, cvv)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-      $insertmbr->execute(array($nom, $prenom, $mail, $adresse, $ville, $numtel, $zip, $numerocarte, $nomcarte, $moicarte, $anneecarte, $cvv));
+      $insertmbr= $bdd->prepare("INSERT INTO carte_banquaire(id_membre nom, prenom, email, adresse, ville, numtel, zip, numerocarte, nomcarte, moicarte, anneecarte, cvv)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      $insertmbr->execute(array($id_membre, $nom, $prenom, $mail, $adresse, $ville, $numtel, $zip, $numerocarte, $nomcarte, $moicarte, $anneecarte, $cvv));
       header("Location: connexion.php");
     }
     else
