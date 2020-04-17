@@ -1,6 +1,8 @@
 <?php
 
-$bdd = new PDO('mysql:host=localhost;dbname=espace_carte;charset=utf8','root','');
+session_start();
+
+$bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
 
 if(isset($_POST['formcarte']))
 {
@@ -24,7 +26,7 @@ if(isset($_POST['formcarte']))
 
       $insertmbr= $bdd->prepare("INSERT INTO carte_banquaire(nom, prenom, email, adresse, ville, numtel, zip, numerocarte, nomcarte, moicarte, anneecarte, cvv)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       $insertmbr->execute(array($nom, $prenom, $mail, $adresse, $ville, $numtel, $zip, $numerocarte, $nomcarte, $moicarte, $anneecarte, $cvv));
-      $erreur = "Votre carte a bien été enregistrée.";
+      header("Location: connexion.php");
     }
     else
     {

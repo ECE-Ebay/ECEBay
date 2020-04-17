@@ -1,0 +1,59 @@
+body {   padding: 0px;   margin: 0px;   background: #333; } 
+/*--- navigation bar ---*/ 
+/* barre de navigation */
+.navbar {
+	background-color:#000000;
+	padding: 2px;
+	margin-bottom: 0;
+}
+.navbar a {
+	padding: 14px 16px;font-size: 16px;
+}
+
+.nav-link, .navbar-brand {   color: #fff;   cursor: pointer; } 
+.nav-link {   margin-right: 1em !important; }
+.nav-link:hover {   color: #aaa; } 
+.navbar-collapse {   justify-content: flex-end; } 
+.header {   background-image: url('Accueil.jpg');   background-size: cover;   background-position: center;   position: relative; } 
+.overlay {   position: absolute;   min-height: 100%;   min-width: 100%;   left: 0px;   top: 0px;   background-color: rgba(0, 0, 0, 0.4); } 
+.description {   left: 50%;   position: absolute;   top: 45%;   transform: translate(-50%, -55%);   text-align: center; } 
+.description h1 {   color: #ffffff; } 
+.description p {   color: #ffffff;   font-size: 1.3rem;   line-height: 1.5; } 
+.description button {   border:1px solid #ffffff;   background-color: #000000;   border-radius: 0;   color: #fff; } 
+.description button:hover {   border:1px solid #fff;   background-color: #fff;   color: #000; } 
+
+.dropbtn {
+	color: #fff;   cursor: pointer;
+	margin-right: 1em !important;
+	background-color: #000000;
+	border-color: #000000;
+	border: none;
+}
+.dropbtn:hover {   color: #aaa;
+} 
+
+.dropdown {
+	position: relative;
+	display: inline-block;
+	padding: 12px 16px;
+}
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f1f1f1;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+	border: 5px solid #f1f1f1;
+}
+.dropdown-content a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+}
+
+.dropdown-content a:hover {background-color: grey;
+	}
+
+	.dropdown:hover .dropdown-content {display: block;}
