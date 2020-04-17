@@ -6,14 +6,14 @@ $bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
 
 if (isset($_SESSION['id']))
 {
-    $requser=$bdd->prepare("SELECT * FROM membres WHERE id = ?");
+    $requser=$bdd->prepare("SELECT * FROM membres WHERE id_utilisateur = ?");
     $requser->execute(array($_SESSION['id']));
     $user=$requser->fetch();
 
     if(isset($_POST['newpseudo']) AND !empty($_POST['newpseudo']) AND $_POST['newpseudo'] != $user['pseudo'])
     {
         $newpseudo=htmlspecialchars($_POST['newpseudo']);
-        $insertpseudo=$bdd->prepare("UPDATE membres SET pseudo = ? WHERE id = ?");
+        $insertpseudo=$bdd->prepare("UPDATE membres SET pseudo = ? WHERE id_utilisateur = ?");
         $insertpseudo->execute(array($newpseudo, $_SESSION['id']));
         header('Location: profil.php?id='.$_SESSION['id']);
     }
@@ -21,7 +21,7 @@ if (isset($_SESSION['id']))
     if(isset($_POST['newmail']) AND !empty($_POST['newmail']) AND $_POST['newmail'] != $user['mail'])
     {
         $newmail=htmlspecialchars($_POST['newmail']);
-        $insertmail=$bdd->prepare("UPDATE membres SET mail = ? WHERE id = ?");
+        $insertmail=$bdd->prepare("UPDATE membres SET mail = ? WHERE id_utilisateur = ?");
         $insertmail->execute(array($newmail, $_SESSION['id']));
         header('Location: profil.php?id='.$_SESSION['id']);
     }
@@ -33,7 +33,7 @@ if (isset($_SESSION['id']))
 
         if($mdp1==$mdp2)
         {
-            $insertmdp=$bdd->prepare("UPDATE membres SET motdepasse = ? WHERE id =? ");
+            $insertmdp=$bdd->prepare("UPDATE membres SET motdepasse = ? WHERE id_utilisateur =? ");
             $insertmdp->execute(array($mdp1, $_SESSION['id']));
             header('Location: profil.php?id='.$_SESSION['id']);
 

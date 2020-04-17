@@ -32,7 +32,7 @@ if(isset($_POST['forminscription']))
                     {
                         if ($donnees['pseudo']==$pseudo&&$donnees['mail']==$mail&&$donnees['motdepasse']==$mdp) 
                         {
-                            $_SESSION['id']=$donnees['id'];
+                            $_SESSION['id']=$donnees['id_utilisateur'];
                             header("Location: option.php?id=".$_SESSION['id']);
                         }
                     }
