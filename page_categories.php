@@ -82,7 +82,7 @@ session_start(); ?>
 					?>
 				</div>
 				<div class="col-sm-4"> 
-					<h3><a href="page_filtree.phpcategorie=<?php echo $categorie; ?>&type_vente=2">Achetez-le maintenant</a></h3>
+					<h3><a href="page_filtree.php?categorie=<?php echo $categorie; ?>&type_vente=2">Achetez-le maintenant</a></h3>
 					<?php
 					while ($donnees = $reponse->fetch())
 					{
@@ -94,7 +94,7 @@ session_start(); ?>
 						?>   
 					</div>
 					<div class="col-sm-4"> 
-						<h3><a href="page_filtree.phpcategorie=<?php echo $categorie; ?>&type_vente=3">Meilleure Offre</a></h3>
+						<h3><a href="page_filtree.php?categorie=<?php echo $categorie; ?>&type_vente=3">Meilleure Offre</a></h3>
 						<?php
 						while ($donnees = $reponse->fetch())
 						{
