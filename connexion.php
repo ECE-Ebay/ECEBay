@@ -1,26 +1,27 @@
 <?php
-session_start();
+session_start();       //permet d'utiliser les variables de session
 
 
-$bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
+$bdd = new PDO('mysql:host=localhost;dbname=espace_membre;charset=utf8','root','');
 
 if(isset($_POST['formconnexion']))
 {
+    //déclaration des variables
     $mailconnect = htmlspecialchars($_POST['mailconnect']);
-    $mdpconnect = sha1($_POST['mdpconnect']);
+    $mdpconnect = sha1($_POST['mdpconnect']);   //sha1 permet d'encripter le mdp
 
-    if(!empty($mailconnect) and !empty($mdpconnect))
+    if(!empty($mailconnect) and !empty($mdpconnect))    //si les champs mailconnect et mdpconnect sont bien remplis alors ...
     {
-        $requser = $bdd ->prepare("SELECT * FROM membres WHERE mail = ? AND motdepasse = ?");
+        $requser = $bdd ->prepare("SELECT * FROM membres WHERE mail = ? AND motdepasse = ?");   //prepare la requete pour verifier si l'utilisateur existe
         $requser->execute(array($mailconnect, $mdpconnect));
         $userexist = $requser->rowCount();
-        if($userexist==1)
+        if($userexist==1)       //permet de verifier que le mail et mdp que l'utilisateur entre correspond bien a ceux de la bdd
         {
             $userinfo=$requser->fetch();
-            $_SESSION['id']=$userinfo['id_utilisateur'];
+            $_SESSION['id_membres']=$userinfo['id_membres'];
             $_SESSION['pseudo']=$userinfo['pseudo'];
             $_SESSION['mail']=$userinfo['mail'];
-            header("Location: profil.php?id=".$_SESSION['id']);
+            header("Location: profil.php?id_membres=".$_SESSION['id_membres']);     //permet de rediriger vers le profil de la personne
 
         }
         else
@@ -53,12 +54,15 @@ if(isset($_POST['formconnexion']))
                 <input type="email" name="mailconnect" placeholder="Mail" />
                 <input type="password" name="mdpconnect" placeholder="Mot de passe" />
                 <input type="submit" name='formconnexion' value="je me connecte"/>
-                <a href="inscription1.php"><input type="button" name='inscription' value="inscription"/></a>
+                <br>
+                <br>
+                <p>Pas encore de compte ?<a href=inscription1.php>  M'inscrire</a> </p>
+
             </form>
             <?php
             if(isset($erreur))
             {
-                echo $erreur;
+                echo '<font color="red">' .$erreur."</font>";
             }
             ?>
 

@@ -1,13 +1,10 @@
 <?php
 
-session_start();
-
-$id_membre=$_SESSION['id'];
-
-$bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
+$bdd = new PDO('mysql:host=localhost;dbname=espace_carte;charset=utf8','root','');
 
 if(isset($_POST['formcarte']))
 {
+    //déclare les variables
     $nom = htmlspecialchars($_POST['nom']);
     $prenom = htmlspecialchars($_POST['prenom']);
     $mail = htmlspecialchars($_POST['email']);
@@ -21,14 +18,16 @@ if(isset($_POST['formcarte']))
     $cvv = htmlspecialchars($_POST['cvv']);
     $anneecarte = htmlspecialchars($_POST['anneecarte']);
 
+    //permet de verifier que l'utilisateur a bien complété tous les champs requis
     if(!empty($_POST['nom']) AND !empty($_POST['prenom']) AND !empty($_POST['email']) AND !empty($_POST['adresse'])  AND !empty($_POST['ville']) AND !empty($_POST['numtel']) AND !empty($_POST['zip']) AND !empty($_POST['numerocarte']) AND !empty($_POST['nomcarte']) AND !empty($_POST['moicarte']) AND !empty($_POST['anneecarte']) AND !empty($_POST['cvv']))
     {
 
 
-
-      $insertmbr= $bdd->prepare("INSERT INTO carte_banquaire(id_membre nom, prenom, email, adresse, ville, numtel, zip, numerocarte, nomcarte, moicarte, anneecarte, cvv)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-      $insertmbr->execute(array($id_membre, $nom, $prenom, $mail, $adresse, $ville, $numtel, $zip, $numerocarte, $nomcarte, $moicarte, $anneecarte, $cvv));
-      header("Location: connexion.php");
+      //prepare la requète pour mettre les infos entrées par l'utilisateur dans la bdd
+      $insertmbr= $bdd->prepare("INSERT INTO carte_banquaire(nom, prenom, email, adresse, ville, numtel, zip, numerocarte, nomcarte, moicarte, anneecarte, cvv)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      //execute la requète précédente
+      $insertmbr->execute(array($nom, $prenom, $mail, $adresse, $ville, $numtel, $zip, $numerocarte, $nomcarte, $moicarte, $anneecarte, $cvv));
+      $erreur = "Votre carte a bien été enregistrée.";
     }
     else
     {
@@ -44,6 +43,7 @@ if(isset($_POST['formcarte']))
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- lien pour afficher les petites icones des carte accéptées et les petits icones dans adresse de livraison-->
 
 </head>
 <body>
@@ -58,7 +58,7 @@ if(isset($_POST['formcarte']))
           <table>
               <tr>
                 <td align="right">
-                  <label> <i class="fa fa-user"> Nom :</label>
+                  <label> <i class="fa fa-user"> Nom :</label>    <!-- la classe fa fa permet d'afficher les petits icones devant et après le text -->
                   <input type="fname" placeholder="Nom" name="nom"/>
               </td>
             </tr>
@@ -124,7 +124,7 @@ if(isset($_POST['formcarte']))
               <tr>
                 <td align="right">
                   <label>Numéro de la carte :</label>
-                  <input type="text" pattern="[0-9]{13,16}" name="numerocarte" placeholder="ex: 1111-2222-3333-4444">
+                  <input type="text" pattern="[0-9]{13,16}" name="numerocarte" placeholder="ex: 1111-2222-3333-4444">* <!-- pattern permet de faire en sorte qu'il y ai une erreur qui s'affiche si l'utilisateur ne rentre pas entre 13 et 16 chiffres compris entre 0 et 9 -->
                   
                 </td>
               </tr>
@@ -171,7 +171,7 @@ if(isset($_POST['formcarte']))
       <?php
       if(isset($erreur))
       {
-        echo $erreur;
+                echo '<font color="red">' .$erreur."</font>";
       }
       ?>
 

@@ -2,40 +2,44 @@
 session_start();
 
 
-$bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
+$bdd = new PDO('mysql:host=localhost;dbname=espace_membre;charset=utf8','root','');
 
-if (isset($_SESSION['id']))
+if (isset($_SESSION['id_membres']))
 {
-    $requser=$bdd->prepare("SELECT * FROM membres WHERE id_utilisateur = ?");
-    $requser->execute(array($_SESSION['id']));
-    $user=$requser->fetch();
+    //requète qui premet de récupérer les infos dans la bdd
+    $requser=$bdd->prepare("SELECT * FROM membres WHERE id_membres = ?");   //requète pour actualisé le mail dans la bdd
+    $requser->execute(array($_SESSION['id_membres']));
+    $user=$requser->fetch();    //permet d'aller récupérer les infos dans la bdd
 
-    if(isset($_POST['newpseudo']) AND !empty($_POST['newpseudo']) AND $_POST['newpseudo'] != $user['pseudo'])
+    if(isset($_POST['newpseudo']) AND !empty($_POST['newpseudo']) AND $_POST['newpseudo'] != $user['pseudo'])   //verifie que les champs sont bien remplis par l'utilisateur
     {
+        //permet de sauvegarder le nouveau pseudo dans la bdd
         $newpseudo=htmlspecialchars($_POST['newpseudo']);
-        $insertpseudo=$bdd->prepare("UPDATE membres SET pseudo = ? WHERE id_utilisateur = ?");
-        $insertpseudo->execute(array($newpseudo, $_SESSION['id']));
-        header('Location: profil.php?id='.$_SESSION['id']);
+        $insertpseudo=$bdd->prepare("UPDATE membres SET pseudo = ? WHERE id_membres = ?");  //requète pour actualisé le pseudo dans la bdd
+        $insertpseudo->execute(array($newpseudo, $_SESSION['id_membres'])); //execute la requète
+        header('Location: profil.php?id_membres='.$_SESSION['id_membres']); //redirige l'utilisateur vers son profil 
     }
 
     if(isset($_POST['newmail']) AND !empty($_POST['newmail']) AND $_POST['newmail'] != $user['mail'])
     {
+        //permet de sauvegarder le nouveau mail dans la bdd
         $newmail=htmlspecialchars($_POST['newmail']);
-        $insertmail=$bdd->prepare("UPDATE membres SET mail = ? WHERE id_utilisateur = ?");
-        $insertmail->execute(array($newmail, $_SESSION['id']));
-        header('Location: profil.php?id='.$_SESSION['id']);
+        $insertmail=$bdd->prepare("UPDATE membres SET mail = ? WHERE id_membres = ?");  //requète pour actualisé le mdp dans la bdd
+        $insertmail->execute(array($newmail, $_SESSION['id_membres']));
+        header('Location: profil.php?id_membres='.$_SESSION['id_membres']);
     }
 
     if(isset($_POST['newmdp1']) AND !empty($_POST['newmdp1']) AND isset($_POST['newmdp2']) AND !empty($_POST['newmdp2']))
     {
-        $mdp1=sha1($_POST['newmdp1']);
+        $mdp1=sha1($_POST['newmdp1']); //premet d'encripter les mdp
         $mdp2=sha1($_POST['newmdp2']);
 
         if($mdp1==$mdp2)
         {
-            $insertmdp=$bdd->prepare("UPDATE membres SET motdepasse = ? WHERE id_utilisateur =? ");
-            $insertmdp->execute(array($mdp1, $_SESSION['id']));
-            header('Location: profil.php?id='.$_SESSION['id']);
+            //permet de sauvegarder le nouveau mot de passe dans la bdd
+            $insertmdp=$bdd->prepare("UPDATE membres SET motdepasse = ? WHERE id_membres =? ");
+            $insertmdp->execute(array($mdp1, $_SESSION['id_membres']));
+            header('Location: profil.php?id_membres='.$_SESSION['id_membres']); //redirige vers le profil de l'utilisateur
 
         }
         else
