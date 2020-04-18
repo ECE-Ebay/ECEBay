@@ -23,10 +23,13 @@ if (isset($_GET['id_membres']) AND $_GET['id_membres']>0)
     	<title>Main</title>  
     	<meta charset="utf-8">  
     	<meta name="viewport" content="width=device-width, initial-scale=1">   
+    	<!-- stylesheet bootstrap -->
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">  
+    	<!-- stylesheet pour les petites formes comme le triangle des dropdowns -->
     	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>  
     	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>  
+    	<!-- lien avec la page css -->
     	<link rel="stylesheet" type="text/css" href="style.css">  
     	<script type="text/javascript">   
     		$(document).ready(function(){     
@@ -34,22 +37,28 @@ if (isset($_GET['id_membres']) AND $_GET['id_membres']>0)
     		}); 
     	</script> 
     </head> 
-    <body style="background-image: url('<?php echo $userinfo['imgfond_url']; ?>'); color: white;">  
+    <!-- on récupère l'image de fond enregistré par le vendeur -->
+    <body style="background-image: url('<?php echo $userinfo['imgfond_url']; ?>'); color: white;"> 
+    <!-- la barre de navigation mais uniquement avec le logo du site --> 
     	<nav class="navbar navbar-expand-md">    
     		<img src="Logo ECEBay.png" alt="AllFruits Logo" style="width:100px;height:100px;">		
     	</nav> 
     	<br>
+    	<!-- pour séparer la page en deux parties -->
     	<div class="row">
     		<div class="col-sm-11">
     			<h1 style="margin-left: 25px;">Votre compte vendeur</h1>
     		</div>
+    		<!-- emmène vers la page de modification des données du vendeur -->
     		<div class="col-sm-1"><br><a href="#"><h10>Modifier?</h10></a></div>
     	</div>
 
     	<div class="container-fluid">
     		<div class="row">
+    			<!-- bande blanche avec la photo de profil du vendeur -->
     			<div class="col-sm-12" style="height:150px; background-color:white;"><div class="col-sm-2"><img src="<?php echo $userinfo['imgprofil_url'] ?>"  style="width:100%; height: 120px; width: auto; margin: 15px;" alt="Image"></div></div>
     		</div><br>
+    		<!-- pour séparer la page en deux parties -->
     		<div class="row">
     			<div class="col-sm-9">
     				<h4 style="margin-left: 25px;">Nom:&nbsp <?php echo $userinfo['nom']; ?> <br>
@@ -58,8 +67,10 @@ if (isset($_GET['id_membres']) AND $_GET['id_membres']>0)
     					Items en ligne:<br><br>
     				</h4>
     			</div>
+    			<!-- emmène vers ajout_item pour rajouter une voiture ou des pièces détachées -->
     			<div class="col-sm-3"><a href="#"><h3>&nbsp&nbsp&nbsp&nbspPoster un item</h3></a></div></div>
     			<?php
+    			//affiche uniquement les items qui appartiennent au vendeur et qui n'ont pas encore été vendus
     			$reponse = $bdd->query('SELECT * FROM items');
     			while ($donnees = $reponse->fetch())
     			{
@@ -77,12 +88,12 @@ if (isset($_GET['id_membres']) AND $_GET['id_membres']>0)
     			?>
 
     		</div><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
+    		<!-- déconnexion -->
     		<a href="page_principale.html" style="margin-left: 25px;"> Deconnexion </a><br><br>
 
     	</body> 
     	</html>
-
+    	<!-- ferme la première boucle if -->
     	<?php
     }
     else
