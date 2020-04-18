@@ -10,7 +10,7 @@ session_start();
 </head>
 <body>
 	<a href="carte.php?id_membres=<?php echo $_SESSION['id_membres'] ?>"><input type="submit" name='acheteur' value="Acheteur"/></a>
-	<input type="submit" name='vendeur' value="Vendeur"/>
+	<a href="inscription_vendeur.php?id_membres=<?php echo $_SESSION['id_membres'] ?>"><input type="submit" name='vendeur' value="Vendeur"/></a>
 </body>
 </html>
 
