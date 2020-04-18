@@ -63,7 +63,7 @@ if (isset($_GET['id_membres']) AND $_GET['id_membres']>0)
     			$reponse = $bdd->query('SELECT * FROM items');
     			while ($donnees = $reponse->fetch())
     			{
-    				if ($donnees['id_vendeur']==$getid) {
+    				if ($donnees['id_vendeur']==$getid&&$donnees['statut']==0) {
 
     					?>
     					<div class="col-sm-4" style="float: left; margin-left: 25px;">
