@@ -9,7 +9,7 @@ session_start();
 	<title>Options</title>
 </head>
 <body>
-	<a href="carte.php?id=<?php echo $_SESSION['id'] ?>"><input type="submit" name='acheteur' value="Acheteur"/></a>
+	<a href="carte.php?id_membres=<?php echo $_SESSION['id_membres'] ?>"><input type="submit" name='acheteur' value="Acheteur"/></a>
 	<input type="submit" name='vendeur' value="Vendeur"/>
 </body>
 </html>

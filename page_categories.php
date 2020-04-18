@@ -33,7 +33,7 @@ session_start(); ?>
 						<a href="page_categories.php?categorie=3">Pièces détachées</a>
 					</div>
 				</div>   
-				<li class="nav-item" style="margin-right: 30px;"><a class="nav-link" href="profil.php?id=<?php echo $_SESSION['id']; ?>">Votre compte</a></li> 
+				<li class="nav-item" style="margin-right: 30px;"><a class="nav-link" href="profil.php?id_membres=<?php echo $_SESSION['id_membres']; ?>">Votre compte</a></li> 
 				<li class="nav-item"><a class="nav-link" href="#">Panier</a></li> 
 			</ul>   
 		</div>  
