@@ -1,3 +1,5 @@
+<?php
+session_start(); ?>
 <!DOCTYPE html>
 <html> 
 <head>  
@@ -23,14 +25,14 @@
 		<div class="collapse navbar-collapse" id="main-navigation">     
 			<ul class="navbar-nav">      
 				<div class="dropdown">
-					<a href="page_choix.html"><button class="dropbtn">Catégories</button></a>
+					<a href="page_choix.php"><button class="dropbtn">Catégories</button></a>
 					<div class="dropdown-content">
 						<a href="page_categories.php?categorie=1">Voiture de luxe</a>
 						<a href="page_categories.php?categorie=2">Voiture d'occasion</a>
 						<a href="page_categories.php?categorie=3">Pièces détachées</a>
 					</div>
 				</div>   
-				<li class="nav-item" style="margin-right: 30px;"><a class="nav-link" href="#">Votre compte</a></li> 
+				<li class="nav-item" style="margin-right: 30px;"><a class="nav-link" href="profil.php?id_membres=<?php echo $_SESSION['id_membres']; ?>">Votre compte</a></li> 
 				<li class="nav-item"><a class="nav-link" href="#">Panier</a></li> 
 			</ul>    
 		</div>  
@@ -49,10 +51,11 @@
 			}
 
 			$reponse = $bdd->query('SELECT * FROM items');
-			$req = $bdd->query('SELECT * FROM photos');
+			
 			
 			while ($donnees = $reponse->fetch())
 			{
+				$req = $bdd->query('SELECT * FROM photos');
 				if (isset($_GET['categorie'])&&isset($_GET['type_vente']))  
 				{  
 					$categorie = $_GET['categorie'];
@@ -64,7 +67,17 @@
 				}  
 				
 				if ($donnees['categorie']==$categorie&&$donnees['type_vente']==$type_vente) {
-					?>
+					$tableau = [];
+					$num = 0;
+					while ($don = $req->fetch())
+					{
+						if ($donnees['id_item']==$don['id_item'])  
+						{  
+							$tableau[$num] = $don['file_url'];
+							$num = $num + 1;
+
+						}
+					}					?>
 
 
 					<div class="col-sm-12" style="height:250px; border-color:red; ">
@@ -74,39 +87,49 @@
 								<!-- The slideshow -->
 								<div class="carousel-inner">
 									<div class="carousel-item active">
-										<?php while ($don = $req->fetch())
-										{
-											if ($donnees['id_item']==$don['id_item'])  
-											{  
-												echo('<img style="height: 200px; width: auto;" src="' . $don['src'] . '" />');
-												$car = $car + 1;
-											} }?>
-										</div>
-										
+										<?php 
+										echo('<img style="height: 200px; width: auto;" src="' . $tableau[0] . '" />');
+
+										?>
 									</div>
 
-									<!-- Carousel controls -->
-									<?php if($car>1) { ?>
-									<a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
-										<span class="carousel-control-prev-icon"></span>
-									</a>
-									<a class="carousel-control-next" href="#myCarousel" data-slide="next">
-										<span class="carousel-control-next-icon"></span>
-									</a>
-								<?php } ?>
+									<?php if(count($tableau)>=2) { ?>
+										<div class="carousel-item">
+											<?php 
+											echo('<img style="height: 200px; width: auto;" src="' . $tableau[1] . '" />');
+
+											?>
+											</div><?php } ?> <?php if(count($tableau)>=3) { ?>
+												<div class="carousel-item">
+													<?php 
+													echo('<img style="height: 200px; width: auto;" src="' . $tableau[2] . '" />');
+
+													?>
+													</div><?php } ?>
+												</div>
+											
+
+											<!-- Carousel controls -->
+											<?php if(count($tableau)>1) { ?>
+												<a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+													<span class="carousel-control-prev-icon"></span>
+												</a>
+												<a class="carousel-control-next" href="#myCarousel" data-slide="next">
+													<span class="carousel-control-next-icon"></span>
+												</a>
+											<?php } ?></div>
+										</div>
+									<p style="color: white;"><br>Marque: <?php echo $donnees['marque']; ?><br><br>Modèle: <?php echo $donnees['modele']; ?><br><br>Qualitées: <?php echo $donnees['description']; ?><br><br>Prix: <?php echo $donnees['prix_initial']; ?></p>
 								</div>
-							</div>
-							<p style="color: white;"><br>Marque: <?php echo $donnees['marque']; ?><br><br>Modèle: <?php echo $donnees['modele']; ?><br><br>Qualitées: <?php echo $donnees['description']; ?><br><br>Prix: <?php echo $donnees['prix_initial']; ?></p>
+
+
+
+								<?php
+							}}
+							$reponse->closeCursor();
+							?>
+
 						</div>
-
-
-
-						<?php
-					}}
-					$reponse->closeCursor();
-					?>
-
-				</div>
-			</div>
-		</body> 
-		</html>
+					</div>
+				</body> 
+				</html>

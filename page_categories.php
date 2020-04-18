@@ -1,3 +1,6 @@
+<?php
+session_start(); ?>
+
 <!DOCTYPE html>
 <html> 
 <head>  
@@ -23,14 +26,14 @@
 		<div class="collapse navbar-collapse" id="main-navigation">     
 			<ul class="navbar-nav">      
 				<div class="dropdown">
-					<a href="page_choix.html"><button class="dropbtn">Catégories</button></a>
+					<a href="page_choix.php"><button class="dropbtn">Catégories</button></a>
 					<div class="dropdown-content">
 						<a href="page_categories.php?categorie=1">Voiture de luxe</a>
 						<a href="page_categories.php?categorie=2">Voiture d'occasion</a>
 						<a href="page_categories.php?categorie=3">Pièces détachées</a>
 					</div>
 				</div>   
-				<li class="nav-item" style="margin-right: 30px;"><a class="nav-link" href="#">Votre compte</a></li> 
+				<li class="nav-item" style="margin-right: 30px;"><a class="nav-link" href="profil.php?id_membres=<?php echo $_SESSION['id_membres']; ?>">Votre compte</a></li> 
 				<li class="nav-item"><a class="nav-link" href="#">Panier</a></li> 
 			</ul>   
 		</div>  
@@ -58,134 +61,191 @@
 	{  
 		echo "ce membre n'existe pas.";  
 	} 
-	if($categorie==1) {
-		?>
-		<h1 style="color: white;margin: 50px;">Voiture de luxe</h1>
-		<div class="row" style="margin: 40px;">
-			<div class="col-sm-4">
+	?>
+	<h1 style="color: white;margin: 50px;"><?php if($categorie==1) { ?>Voiture de luxe <?php } ?>
+	<?php if($categorie==2) { ?>Voiture d'occasion <?php } ?>
+	<?php if($categorie==3) { ?>Pièces détachées <?php } ?>
+</h1>
+<div class="row" style="margin: 40px;">
+	<div class="col-sm-4" style="text-align: center;">
 
-				<h3><a href="page_filtree.php?categorie=1&type_vente=1">Enchères</a></h3>
-				<?php
-				while ($donnees = $reponse->fetch())
+		<h3><a href="page_filtree.php?categorie=<?php echo $categorie; ?>&type_vente=1">Enchères</a></h3>
+		<?php
+		while ($donnees = $reponse->fetch())
+		{
+			$req = $bdd->query('SELECT * FROM photos');
+			if ($donnees['categorie']==$categorie&&$donnees['type_vente']==1) {
+				$tableau = [];
+				$num = 0;
+				while ($don = $req->fetch())
 				{
-					if ($donnees['categorie']==$categorie&&$donnees['type_vente']==1) {
+					if ($donnees['id_item']==$don['id_item'])  
+					{  
+						$tableau[$num] = $don['file_url'];
+						$num = $num + 1;
 
-						?>
-						<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-						<p style="color: white;">Nom:&nbsp<?php echo $donnees['nom']; ?><br>Prix:&nbsp<?php echo $donnees['prix_initial']; ?></p><?php
-					}}
-					?>
-				</div>
-				<div class="col-sm-4"> 
-					<h3><a href="page_filtree.phpcategorie=1&type_vente=2">Achetez-le maintenant</a></h3>
-					<?php
-					while ($donnees = $reponse->fetch())
-					{
-						if ($donnees['categorie']==$categorie&&$donnees['type_vente']==2) {
+					}
+				}	
+				?>
+				<div id="myCarousel" class="carousel slide" data-ride="carousel" >
+
+					<!-- The slideshow -->
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<?php 
+							echo('<img style="height: 200px; width: auto;" src="' . $tableau[0] . '" />');
+
 							?>
-							<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-							<p style="color: white;">Nom:&nbsp<?php echo $donnees['nom']; ?><br>Prix:&nbsp<?php echo $donnees['prix_initial']; ?></p> <?php
-						}}
-						?>   
+						</div>
+
+						<?php if(count($tableau)>=2) { ?>
+							<div class="carousel-item">
+								<?php 
+								echo('<img style="height: 200px; width: auto;" src="' . $tableau[1] . '" />');
+
+								?>
+								</div><?php } ?> <?php if(count($tableau)>=3) { ?>
+									<div class="carousel-item">
+										<?php 
+										echo('<img style="height: 200px; width: auto;" src="' . $tableau[2] . '" />');
+
+										?>
+										</div><?php } ?>
+									</div>
+									<?php if(count($tableau)>1) { ?>
+										<a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+											<span class="carousel-control-prev-icon"></span>
+										</a>
+										<a class="carousel-control-next" href="#myCarousel" data-slide="next">
+											<span class="carousel-control-next-icon"></span>
+										</a>
+									<?php } ?>
+								</div>
+
+								<!-- Carousel controls -->
+								
+								<p style="color: white;">Marque: <?php echo $donnees['marque']; ?><br>Modèle: <?php echo $donnees['modele']; ?><br>Prix: <?php echo $donnees['prix_initial']; ?></p> <?php
+							}
+						}
+						?>
 					</div>
 					<div class="col-sm-4"> 
-						<h3><a href="page_filtree.phpcategorie=1&type_vente=3">Meilleure Offre</a></h3>
+						<h3><a href="page_filtree.php?categorie=<?php echo $categorie; ?>&type_vente=2">Achetez-le maintenant</a></h3>
 						<?php
 						while ($donnees = $reponse->fetch())
 						{
-							if ($donnees['categorie']==$categorie&&$donnees['type_vente']==3) {
-								?>
-								<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-								<p style="color: white;">Nom:&nbsp<?php echo $donnees['nom']; ?><br>Prix:&nbsp<?php echo $donnees['prix_initial']; ?></p>  <?php
-							}}
-							?>   
-						</div>
-						</div> <?php } ?> <?php
-						if($categorie==2) {
-							?>
-							<h1 style="color: white;margin: 50px;">Voiture d'occasion</h1>
-							<div class="row" style="margin: 40px;">
-								<div class="col-sm-4">
+							$req = $bdd->query('SELECT * FROM photos');
+							if ($donnees['categorie']==$categorie&&$donnees['type_vente']==2) {
+								$tableau = [];
+								$num = 0;
+								while ($don = $req->fetch())
+								{
+									if ($donnees['id_item']==$don['id_item'])  
+									{  
+										$tableau[$num] = $don['file_url'];
+										$num = $num + 1;
 
-									<h3><a href="page_filtree.php?categorie=2&type_vente=1">Enchères</a></h3>
-									<?php
-									while ($donnees = $reponse->fetch())
-									{
-										if ($donnees['categorie']==$categorie&&$donnees['type_vente']==1) {
+									}
+								}	
+								?>
+								<div id="myCarousel" class="carousel slide" data-ride="carousel" >
+
+									<!-- The slideshow -->
+									<div class="carousel-inner">
+										<div class="carousel-item active">
+											<?php 
+											echo('<img style="height: 200px; width: auto;" src="' . $tableau[0] . '" />');
 
 											?>
-											<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-											<p style="color: white;">Marque:&nbsp<?php echo $donnees['marque']; ?><br>Modèle:&nbsp<?php echo $donnees['modele']; ?><br>Prix:&nbsp<?php echo $donnees['prix_initial']; ?></p><?php
-										}}
-										?>
+										</div>
+
+										<?php if(count($tableau)>=2) { ?>
+											<div class="carousel-item">
+												<?php 
+												echo('<img style="height: 200px; width: auto;" src="' . $tableau[1] . '" />');
+
+												?>
+												</div><?php } ?> <?php if(count($tableau)>=3) { ?>
+													<div class="carousel-item">
+														<?php 
+														echo('<img style="height: 200px; width: auto;" src="' . $tableau[2] . '" />');
+
+														?>
+														</div><?php } ?>
+													</div>
+													<?php if(count($tableau)>1) { ?>
+														<a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+															<span class="carousel-control-prev-icon"></span>
+														</a>
+														<a class="carousel-control-next" href="#myCarousel" data-slide="next">
+															<span class="carousel-control-next-icon"></span>
+														</a>
+													<?php } ?>
+												</div>
+												<p style="color: white;">Marque: <?php echo $donnees['marque']; ?><br>Modèle: <?php echo $donnees['modele']; ?><br>Prix: <?php echo $donnees['prix_initial']; ?></p> <?php
+											}
+										}
+										?>   
 									</div>
+
 									<div class="col-sm-4"> 
-										<h3><a href="page_filtree.phpcategorie=2&type_vente=2">Achetez-le maintenant</a></h3>
+										<h3><a href="page_filtree.php?categorie=<?php echo $categorie; ?>&type_vente=3">Meilleure Offre</a></h3>
 										<?php
 										while ($donnees = $reponse->fetch())
 										{
-											if ($donnees['categorie']==$categorie&&$donnees['type_vente']==2) {
-												?>
-												<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-												<p style="color: white;">Marque:&nbsp<?php echo $donnees['marque']; ?><br>Modèle:&nbsp<?php echo $donnees['modele']; ?><br>Prix:&nbsp<?php echo $donnees['prix_initial']; ?></p><?php
-											}}
-											?>   
-										</div>
-										<div class="col-sm-4"> 
-											<h3><a href="page_filtree.phpcategorie=2&type_vente=3">Meilleure Offre</a></h3>
-											<?php
-											while ($donnees = $reponse->fetch())
-											{
-												if ($donnees['categorie']==$categorie&&$donnees['type_vente']==3) {
-													?>
-													<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-													<p style="color: white;">Marque:&nbsp<?php echo $donnees['marque']; ?><br>Modèle:&nbsp<?php echo $donnees['modele']; ?><br>Prix:&nbsp<?php echo $donnees['prix_initial']; ?></p>  <?php
-												}}
-												?>   
-											</div>
-											</div> <?php } ?><?php
-											if($categorie==3) {
-												?>
-												<h1 style="color: white;margin: 50px;">Pièces détachées</h1>
-												<div class="row" style="margin: 40px;">
-													<div class="col-sm-4">
+											$req = $bdd->query('SELECT * FROM photos');
+											if ($donnees['categorie']==$categorie&&$donnees['type_vente']==3) {
+												$tableau = [];
+												$num = 0;
+												while ($don = $req->fetch())
+												{
+													if ($donnees['id_item']==$don['id_item'])  
+													{  
+														$tableau[$num] = $don['file_url'];
+														$num = $num + 1;
 
-														<h3><a href="page_filtree.php?categorie=3&type_vente=1">Enchères</a></h3>
-														<?php
-														while ($donnees = $reponse->fetch())
-														{
-															if ($donnees['categorie']==$categorie&&$donnees['type_vente']==1) {
+													}
+												}	
+												?>
+												<div id="myCarousel" class="carousel slide" data-ride="carousel" >
 
-																?>
-																<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-																<p style="color: white;">Marque:&nbsp<?php echo $donnees['marque']; ?><br>Modèle:&nbsp<?php echo $donnees['modele']; ?><br>Prix:&nbsp<?php echo $donnees['prix_initial']; ?></p><?php
-															}}
+													<!-- The slideshow -->
+													<div class="carousel-inner">
+														<div class="carousel-item active">
+															<?php 
+															echo('<img style="height: 200px; width: auto;" src="' . $tableau[0] . '" />');
+
 															?>
 														</div>
-														<div class="col-sm-4"> 
-															<h3><a href="page_filtree.phpcategorie=3&type_vente=2">Achetez-le maintenant</a></h3>
-															<?php
-															while ($donnees = $reponse->fetch())
-															{
-																if ($donnees['categorie']==$categorie&&$donnees['type_vente']==2) {
-																	?>
-																	<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-																	<p style="color: white;">Marque:&nbsp<?php echo $donnees['marque']; ?><br>Modèle:&nbsp<?php echo $donnees['modele']; ?><br>Prix:&nbsp<?php echo $donnees['prix_initial']; ?></p><?php
-																}}
-																?>   
-															</div>
-															<div class="col-sm-4"> 
-																<h3><a href="page_filtree.phpcategorie=3&type_vente=3">Meilleure Offre</a></h3>
-																<?php
-																while ($donnees = $reponse->fetch())
-																{
-																	if ($donnees['categorie']==$categorie&&$donnees['type_vente']==3) {
+
+														<?php if(count($tableau)>=2) { ?>
+															<div class="carousel-item">
+																<?php 
+																echo('<img style="height: 200px; width: auto;" src="' . $tableau[1] . '" />');
+
+																?>
+																</div><?php } ?> <?php if(count($tableau)>=3) { ?>
+																	<div class="carousel-item">
+																		<?php 
+																		echo('<img style="height: 200px; width: auto;" src="' . $tableau[2] . '" />');
+
 																		?>
-																		<img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-																		<p style="color: white;">Marque:&nbsp<?php echo $donnees['marque']; ?><br>Modèle:&nbsp<?php echo $donnees['modele']; ?><br>Prix:&nbsp<?php echo $donnees['prix_initial']; ?></p>  <?php
-																	}}
-																	?>   
+																		</div><?php } ?>
+																	</div>
+																	<?php if(count($tableau)>1) { ?>
+																		<a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+																			<span class="carousel-control-prev-icon"></span>
+																		</a>
+																		<a class="carousel-control-next" href="#myCarousel" data-slide="next">
+																			<span class="carousel-control-next-icon"></span>
+																		</a>
+																	<?php } ?>
 																</div>
-																</div><?php } ?>
-															</body> 
-															</html>
+																<p style="color: white;">Marque: <?php echo $donnees['marque']; ?><br>Modèle: <?php echo $donnees['modele']; ?><br>Prix: <?php echo $donnees['prix_initial']; ?></p>  <?php
+															}
+														}
+														?>   
+													</div>
+												</div> 
+											</body> 
+											</html>
