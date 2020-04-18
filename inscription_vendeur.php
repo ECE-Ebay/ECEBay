@@ -1,6 +1,8 @@
 <?php
 
+session_start();
 
+$id_membres=$_SESSION['id_membres'];
 
 $bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
 
@@ -34,8 +36,9 @@ if(isset($_POST['formcarte']))
 
             if(move_uploaded_file($file_tmp_name1, $file_dest1) AND move_uploaded_file($file_tmp_name2, $file_dest2)) {
 
-                $insertvendeur = $bdd->prepare('INSERT INTO vendeur(nom, prenom, imgfond_nom, imgfond_url, imgprofil_nom, imgprofil_url) VALUES(?,?,?,?,?,?)');
-                $insertvendeur->execute(array($nom, $prenom, $file_name1, $file_dest1, $file_name2, $file_dest2));
+                $insertvendeur = $bdd->prepare('INSERT INTO `vendeur` VALUES(?,?,?,?,?,?,?)');
+                $insertvendeur->execute(array($id_membres, $nom, $prenom, $file_name1, $file_dest1, $file_name2, $file_dest2));
+                header("Location: connexion.php");
 
             } else {
                 $erreur = "Une erreur est survenue lors de l'envoi du fichier";
@@ -62,12 +65,9 @@ if(isset($_POST['formcarte']))
 </head>
 <body>
 
-    <h1>PAIEMENT</h1>
-
-
     <form method="post" enctype="multipart/form-data">
 
-        <h3>Adresse de livraison :</h3>
+        <h2>Informations vendeur :</h2>
 
         <table>
           <tr>
