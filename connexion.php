@@ -1,8 +1,8 @@
 <?php
+
 session_start(); //permet d'utiliser les variables de session
 
-
-$bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
+$bdd = new PDO('mysql:host=localhost;dbname=espace_membre;charset=utf8','root','');
 
 if(isset($_POST['formconnexion']))
 {
@@ -21,6 +21,7 @@ if(isset($_POST['formconnexion']))
             $_SESSION['pseudo']=$userinfo['pseudo'];
             $_SESSION['mail']=$userinfo['mail'];
             header("Location: profil.php?id_membres=".$_SESSION['id_membres']); //permet de rediriger vers le profil de la personne
+
 
         }
         else
@@ -56,6 +57,7 @@ if(isset($_POST['formconnexion']))
                 <br>
                 <br>
                 <p>Pas encore de compte ?<a href=inscription1.php>  M'inscrire</a> </p>
+
             </form>
             <?php
             if(isset($erreur))
