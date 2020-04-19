@@ -66,7 +66,7 @@ session_start(); ?>
 					echo "ce membre n'existe pas.";  
 				}  
 				
-				if ($donnees['categorie']==$categorie&&$donnees['type_vente']==$type_vente) {
+				if ($donnees['categorie']==$categorie&&$donnees['type_vente']==$type_vente&&$donnees['statut']==0) {
 					$tableau = [];
 					$num = 0;
 					while ($don = $req->fetch())

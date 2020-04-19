@@ -74,7 +74,7 @@ session_start(); ?>
 		while ($donnees = $reponse->fetch())
 		{
 			$req = $bdd->query('SELECT * FROM photos');
-			if ($donnees['categorie']==$categorie&&$donnees['type_vente']==1) {
+			if ($donnees['categorie']==$categorie&&$donnees['type_vente']==1&&$donnees['statut']==0) {
 				$tableau = [];
 				$num = 0;
 				while ($don = $req->fetch())
@@ -135,7 +135,7 @@ session_start(); ?>
 						while ($donnees = $reponse->fetch())
 						{
 							$req = $bdd->query('SELECT * FROM photos');
-							if ($donnees['categorie']==$categorie&&$donnees['type_vente']==2) {
+							if ($donnees['categorie']==$categorie&&$donnees['type_vente']==2&&$donnees['statut']==0) {
 								$tableau = [];
 								$num = 0;
 								while ($don = $req->fetch())
@@ -194,7 +194,7 @@ session_start(); ?>
 										while ($donnees = $reponse->fetch())
 										{
 											$req = $bdd->query('SELECT * FROM photos');
-											if ($donnees['categorie']==$categorie&&$donnees['type_vente']==3) {
+											if ($donnees['categorie']==$categorie&&$donnees['type_vente']==3&&$donnees['statut']==0) {
 												$tableau = [];
 												$num = 0;
 												while ($don = $req->fetch())
