@@ -54,7 +54,7 @@ if (isset($_GET['id_membres']) AND $_GET['id_membres']>0)
     		</div>
     		<!-- emmène vers la page de modification des données du vendeur ou deconnexion -->
     		<div class="col-sm-2">
-    			<a href="page_principale.html"> Deconnexion </a><br><a href="#"><h10>Modifier?</h10></a></div>
+    			<a href="page_principale.html"> Deconnexion </a><br><a href="editionprofil.php"><h10>Modifier?</h10></a></div>
     		</div>
 
     		<div class="container-fluid">
