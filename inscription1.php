@@ -90,22 +90,28 @@ if(isset($_POST['forminscription']))
 <head>
     <title>login page</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">   
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">   
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>  
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>  
+        <link rel="stylesheet" type="text/css" href="style.css"> 
 </head>
-<body style="background-color: #111111;">
+<body>
 
     <nav class="navbar navbar-expand-md">    
-        <img src="Logo ECEBay.png" alt="AllFruits Logo" style="width:100px;height:100px;">
-        <button class="navbar-toggler navbar-dark" type="button" datatoggle="collapse" data-target="#main-navigation">     
-            <span class="navbar-toggler-icon"></span>    
-        </button>    
-        <div class="collapse navbar-collapse" id="main-navigation">     
-            <ul class="navbar-nav">      
+            <img src="Logo ECEBay.png" alt="AllFruits Logo" style="width:100px;height:100px;">
+                <button class="navbar-toggler navbar-dark" type="button" datatoggle="collapse" data-target="#main-navigation">     
+                    <span class="navbar-toggler-icon"></span>    
+                </button>    
+            <div class="collapse navbar-collapse" id="main-navigation">     
+                <ul class="navbar-nav">      
 
-            </ul>    
-        </div>  
-    </nav>
+                </ul>    
+            </div>  
+        </nav> 
 
-    <div align="center"  style="color: #c1c1c1">
+        <body style="background-color: #111111; color: #c1c1c1">
+    <div align="center">
         <h2>Inscription : </h2>
 
         <br /><br />
@@ -148,8 +154,8 @@ if(isset($_POST['forminscription']))
             <tr>
                 <td></td>
                 <td>    
-                    <input style="background-color: #6f6f6f; color: #ffffff" type="submit" name='forminscription' value="Suite"/>
-                    <p style="color: #c1c1c1"><br>Déjà inscrit ?<a href=connexion.php>Me connecter</a> </p>
+                    <input type="submit" name='forminscription' value="Suite"/>
+                    <p>Déjà inscrit ?<a href=connexion.php>Me connecter</a> </p>
                 </td>
             </tr>
         </form>
@@ -161,28 +167,29 @@ if(isset($_POST['forminscription']))
         ?>
 
     </div>
+</body>
 
-    <footer class="page-footer">    
-        <div class="container">     
-            <div class="row">      
-                <div class="col-lg-8 col-md-8 col-sm-12">       
-                    <h6 class="text-uppercase font-weight-bold">Information additionnelle</h6>       
-                    <p>        Nous sommes un collectif d'étudiants ayant pour but de redonner envie au gens de cultiver       </p>       
-                    <p>        Notre objectif est de transmettre ces connaissances et de permettre aux personnes animées par cette passion de se rencontrer       </p>      
-                </div>     
+<footer class="page-footer">    
+    <div class="container">     
+        <div class="row">      
+            <div class="col-lg-8 col-md-8 col-sm-12">       
+                <h6 class="text-uppercase font-weight-bold">Information additionnelle</h6>       
+                <p>        Nous sommes un collectif d'étudiants ayant pour but de redonner envie au gens de cultiver       </p>       
+                <p>        Notre objectif est de transmettre ces connaissances et de permettre aux personnes animées par cette passion de se rencontrer       </p>      
+            </div>     
 
-                <div class="col-lg-4 col-md-4 col-sm-12">       
-                    <h6 class="text-uppercase font-weightbold">Contact</h6>       
-                    <p> 40, avenue des Ternes, 75017 Paris, France <br>        
-                        info@ECEbay.ece.fr <br>        
-                        +33 01 03 05 07 09 <br>        
-                        +33 06 05 04 03 02
-                    </p>      
-                </div>    
+            <div class="col-lg-4 col-md-4 col-sm-12">       
+                <h6 class="text-uppercase font-weightbold">Contact</h6>       
+                <p> 40, avenue des Ternes, 75017 Paris, France <br>        
+                    info@ECEbay.ece.fr <br>        
+                    +33 01 03 05 07 09 <br>        
+                    +33 06 05 04 03 02
+                </p>      
             </div>    
+        </div>    
 
-            <div class="footer-copyright text-center">&copy; 2020 Copyright | Droit d'auteur: ECEBay@ece.fr</div>  
-        </div>
-    </footer> 
+        <div class="footer-copyright text-center">&copy; 2020 Copyright | Droit d'auteur: ECEBay@ece.fr</div>  
+    </div>
+</footer> 
 </body>
 </html>
