@@ -131,6 +131,7 @@ if (isset($_GET['id_membres']) AND $_GET['id_membres']>0)
     													</a>
     													<?php } ?></div>
     													<p style="color: white;">Marque: <?php echo $donnees['marque']; ?><br>Modèle: <?php echo $donnees['modele']; ?><br>Prix: <?php echo $donnees['prix_initial']; ?></p> 
+    													<a href="suppression_item.php?id_item=<?php echo $donnees['id_item']; ?>"><button type="button" style="background-color: red;">Supprimer</button></a><br><br>
     												</div>
     												<?php
     											}
