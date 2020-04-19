@@ -3,6 +3,8 @@
 //continue la session
 session_start();
 
+require 'verif_enchere.php';
+
 //accès à la bdd
 $bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
 
@@ -48,7 +50,7 @@ if (isset($_GET['id_membres']) AND $_GET['id_membres']>0)
     	</nav> 
     	<br>
     	<!-- pour séparer la page en deux parties -->
-    	<div class="row">
+    	<div class="row" style="background-color: black;">
     		<div class="col-sm-10">
     			<h1 style="margin-left: 25px;">Votre compte vendeur</h1>
     		</div>
@@ -65,14 +67,16 @@ if (isset($_GET['id_membres']) AND $_GET['id_membres']>0)
     			<!-- pour séparer la page en deux parties -->
     			<div class="row">
     				<div class="col-sm-9">
+    					<div class="col-sm-4" style="background-color: black;">
     					<h4 style="margin-left: 25px;">Nom:&nbsp <?php echo $userinfo['nom']; ?> <br>
     						Prénom:&nbsp <?php echo $userinfo['prenom']; ?> <br>
     						Nom:&nbsp <?php echo $info['mail']; ?> <br><br><br><br>
     						Items en ligne:<br><br>
     					</h4>
     				</div>
+    				</div>
     				<!-- emmène vers ajout_item pour rajouter une voiture ou des pièces détachées -->
-    				<div class="col-sm-3"><a href="ajout_item.php?id_membres=<?php echo $_SESSION['id_membres'] ?>"><h3>&nbsp&nbsp&nbsp&nbspPoster un item</h3></a></div></div>
+    				<div class="col-sm-3" style="background-color: black;"><a href="ajout_item.php?id_membres=<?php echo $_SESSION['id_membres'] ?>"><h3>&nbsp&nbsp&nbsp&nbspPoster un item</h3></a></div></div>
     				<?php
     			//affiche uniquement les items qui appartiennent au vendeur et qui n'ont pas encore été vendus
     				$reponse = $bdd->query('SELECT * FROM items');
@@ -92,7 +96,7 @@ if (isset($_GET['id_membres']) AND $_GET['id_membres']>0)
     							}
     						}
     						?>
-    						<div class="col-sm-4" style="float: left; margin-left: 25px; text-align: center;">
+    						<div class="col-sm-4" style="float: left; margin-left: 25px; text-align: center; background-color: black;">
 
     							<div id="myCarousel" class="carousel slide" data-ride="carousel" >
 

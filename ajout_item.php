@@ -2,6 +2,8 @@
 //continue la session
 session_start(); 
 
+require 'verif_enchere.php';
+
 //récupère la variable de session
 $id_membres=$_SESSION['id_membres'];
 
@@ -72,6 +74,12 @@ if(isset($_POST['formajoutitem']))
 					//insertion de la photo dans sa base de donnée
 					$insertphoto = $bdd->prepare('INSERT INTO photos(id_item, name, file_url) VALUES(?,?,?)');
 					$insertphoto->execute(array($id_item, $file_name, $file_dest));
+					
+					//si c'est une enchere, on renvoie vers une page qui demande la fin du compte à rebours
+					if($type_vente==1) {
+						header("Location: ajout_enchere.php?id_item=$id_item");
+					}
+
 				} else {
 					$erreur = "Une erreur est survenue lors de l'envoi du fichier";
 				}
