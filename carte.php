@@ -2,6 +2,8 @@
 
 session_start();
 
+require 'verif_enchere.php';
+
 $id_membres=$_SESSION['id_membres'];
 
 $bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
@@ -21,6 +23,7 @@ if(isset($_POST['formcarte']))
     $moicarte = htmlspecialchars($_POST['moicarte']);
     $cvv = htmlspecialchars($_POST['cvv']);
     $anneecarte = htmlspecialchars($_POST['anneecarte']);
+    $argent=1000000;
 
     //permet de verifier que l'utilisateur a bien complété tous les champs requis
     if(!empty($_POST['nom']) AND !empty($_POST['prenom']) AND !empty($_POST['email']) AND !empty($_POST['adresse'])  AND !empty($_POST['ville']) AND !empty($_POST['numtel']) AND !empty($_POST['zip']) AND !empty($_POST['numerocarte']) AND !empty($_POST['nomcarte']) AND !empty($_POST['moicarte']) AND !empty($_POST['anneecarte']) AND !empty($_POST['cvv']))
@@ -28,9 +31,9 @@ if(isset($_POST['formcarte']))
 
 
       //prepare la requète pour mettre les infos entrées par l'utilisateur dans la bdd
-      $insertmbr= $bdd->prepare("INSERT INTO carte_banquaire(id_membre, nom, prenom, email, adresse, ville, numtel, zip, numerocarte, nomcarte, moicarte, anneecarte, cvv)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      $insertmbr= $bdd->prepare("INSERT INTO carte_banquaire(id_membre, nom, prenom, email, adresse, ville, numtel, zip, numerocarte, nomcarte, moicarte, anneecarte, cvv, argent)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       //execute la requète précédente
-      $insertmbr->execute(array($id_membres, $nom, $prenom, $mail, $adresse, $ville, $numtel, $zip, $numerocarte, $nomcarte, $moicarte, $anneecarte, $cvv));
+      $insertmbr->execute(array($id_membres, $nom, $prenom, $mail, $adresse, $ville, $numtel, $zip, $numerocarte, $nomcarte, $moicarte, $anneecarte, $cvv, $argent));
       header("Location: connexion.php");
     }
     else
