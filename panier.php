@@ -132,7 +132,7 @@ $panier = new panier($DB);
 
 
 
-						<p style="color: white;">Marque: <?php echo $product->marque; ?><br>Modèle: <?php echo $product->modele; ?><br>Prix: <?php echo $product->prix_initial; ?><br><button onclick="ajoutPanier(<?php echo $product->id_item; ?>)">Ajouter</button></p> <?php
+						<p style="color: white;">Marque: <?php echo $product->marque; ?><br>Modèle: <?php echo $product->modele; ?><br>Prix: <?php echo $product->prix_initial; ?><br><a href="meilleure_offre.php?id_item=<?php echo $product->id_item; ?>"><button>Meilleure Offre</button></p> <?php
 					}
 				}
 
