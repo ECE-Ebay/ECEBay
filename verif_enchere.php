@@ -21,11 +21,10 @@ while ($donnees = $reponse->fetch()) {
 			if($don['statut']==0) {
 				//et que son heure est venue
 				
-				$birthday = $donnees['date_fin'];
-				echo $birthday;
+				$date_fin = $donnees['date_fin'];
 				
 				$v1 = strtotime($test);
-				$v2 = strtotime($birthday);
+				$v2 = strtotime($date_fin);
 
 				//$val1 = date('Y-m-d\TH:i:s');
 				//$val2 = $donnees['date_fin'];
