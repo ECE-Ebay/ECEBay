@@ -3,7 +3,6 @@
 date_default_timezone_set('Europe/Paris');
 
 $test = date("Y-m-d H:i:s");
-echo $test;
 
 //accès à la bdd
 $bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
