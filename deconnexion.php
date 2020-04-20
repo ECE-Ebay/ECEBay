@@ -1,5 +1,6 @@
 <?php
 session_start();
+header('Location: inscription1.php?id_membres='.$_SESSION['id_membres']);
 $_SESSION = array();
 session_destroy();
 ?>
