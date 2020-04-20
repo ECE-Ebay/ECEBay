@@ -43,27 +43,105 @@ $panier = new panier($DB);
 		</div>  
 	</nav> 
 	<h1 style="color: #ffffff; padding: 30px;">Panier</h1>
-	<h3 style="color: #ffffff; padding: 30px;">Achat immédiat</h3> 
-
-	<div class="container features"> 
+ 
 		<?php
 	$ids = $_SESSION['panier'];		//Combien d'items il y a dans le panier
+	?>   
 
-	$products = $DB->query('SELECT * FROM items WHERE id_item IN ('.implode(',',$ids).')');	//On récupère les éléments du panier
-	foreach ($products as $product):
-		?>   
-		<div class="row">     
-			<div class="col-lg-4 col-md-4 col-sm-12">      
-				<img src="column1.jpg" class="img-fluid">     
-				<span><?= $product->marque; ?>€</span> 
-				<span><?= number_format($product->prix_initial,2,','," "); ?>€</span>
-			</div>     
-		</div> 
+	<div class="row" style="margin: 40px;">
+		<div class="col-sm-4" style="text-align: center;">
 
-		 
+			<h3 style="color: #ffffff; padding: 30px;">Enchères</h3>
+			<?php
+				$products = $DB->query('SELECT * FROM items WHERE id_item IN ('.implode(',',$ids).')');	//On récupère les éléments du panier
+				foreach ($products as $product){
+					$req = $DB->query('SELECT * FROM photos');
+					if ($product->type_vente==1&&$product->statut==0) {
+						$tableau = [];
+						$num = 0;
+						foreach ($req as $don)
+						{
+							if ($product->id_item==$don->id_item)  
+							{  
+								$tableau[$num] = $don->file_url;
+								$num = $num + 1;
 
-	<?php endforeach; ?>
+							}
+						}	
+						?>
+						<?php require'carousel.php'?>
 
-</body>
 
-<?php require 'footer.php'?>
+
+						<p style="color: white;">Marque: <?php echo $product->marque; ?><br>Modèle: <?php echo $product->modele; ?><br>Prix: <?php echo $product->prix_initial; ?><br><a href="encherir.php?id_item=<?php echo $product->id_item; ?>"><button>Enchérir</button></a></p> <?php
+					}
+				}
+
+				?>
+			</div>
+			<div class="col-sm-4" style="text-align: center;"> 
+				<h3 style="color: #ffffff; padding: 30px;">Achetez-le maintenant</h3>
+				<?php
+				$products = $DB->query('SELECT * FROM items WHERE id_item IN ('.implode(',',$ids).')');	//On récupère les éléments du panier
+				foreach ($products as $product){
+					$req = $DB->query('SELECT * FROM photos');
+					if ($product->type_vente==2&&$product->statut==0) {
+						$tableau = [];
+						$num = 0;
+						foreach ($req as $don)
+						{
+							if ($product->id_item==$don->id_item)  
+							{  
+								$tableau[$num] = $don->file_url;
+								$num = $num + 1;
+
+							}
+						}	
+						?>
+						<?php require'carousel.php'?>
+
+
+
+						<p style="color: white;">Marque: <?php echo $product->marque; ?><br>Modèle: <?php echo $product->modele; ?><br>Prix: <?php echo $product->prix_initial; ?><br><a href="achat_immediat.php?id_item=<?php echo $product->id_item; ?>"><button>Achat immédiat</button></a></p> <?php
+					}
+				}
+
+				?>
+			</div>
+
+			<div class="col-sm-4" style="text-align: center;"> 
+				<h3 style="color: #ffffff; padding: 30px;">Meilleure Offre</h3>
+				<?php
+				$products = $DB->query('SELECT * FROM items WHERE id_item IN ('.implode(',',$ids).')');	//On récupère les éléments du panier
+				foreach ($products as $product){
+					$req = $DB->query('SELECT * FROM photos');
+					if ($product->type_vente==3&&$product->statut==0) {
+						$tableau = [];
+						$num = 0;
+						foreach ($req as $don)
+						{
+							if ($product->id_item==$don->id_item)  
+							{  
+								$tableau[$num] = $don->file_url;
+								$num = $num + 1;
+
+							}
+						}	
+						?>
+						<?php require'carousel.php'?>
+
+
+
+						<p style="color: white;">Marque: <?php echo $product->marque; ?><br>Modèle: <?php echo $product->modele; ?><br>Prix: <?php echo $product->prix_initial; ?><br><button onclick="ajoutPanier(<?php echo $product->id_item; ?>)">Ajouter</button></p> <?php
+					}
+				}
+
+				?>
+			</div>
+		
+
+
+
+	</body>
+
+	<?php require 'footer.php'?>

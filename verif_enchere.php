@@ -90,9 +90,6 @@ while ($donnees = $reponse->fetch()) {
 					$insertstatut=$bdd->prepare("UPDATE items SET id_acheteur = ? WHERE id_item = ?");
 					$insertstatut->execute(array($id_gagnant, $don['id_item']));
 				}
-				else {
-					echo "pas encore";
-				}
 			}
 		}
 	}
