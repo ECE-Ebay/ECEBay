@@ -2,6 +2,8 @@
 
 session_start();
 
+require 'verif_enchere.php';
+
 $id_membres=$_SESSION['id_membres'];
 
 $bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
@@ -60,50 +62,70 @@ if(isset($_POST['formcarte']))
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">   
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">  
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- lien pour afficher les petites icones des carte accéptées et les petits icones dans adresse de livraison-->
+    <!-- lien pour afficher les petites icones des carte accéptées et les petits icones dans adresse de livraison--> 
+    <link rel="icon" href="Logo ECEBay.png" type="image/gif">
+    <!-- pour l'icon -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>  
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>  
+    <link rel="stylesheet" type="text/css" href="style.css"> 
 </head>
-<body>
+<nav class="navbar navbar-expand-md">    
+    <img src="Logo ECEBay.png" alt="AllFruits Logo" style="width:100px;height:100px;">
+    <button class="navbar-toggler navbar-dark" type="button" datatoggle="collapse" data-target="#main-navigation">     
+        <span class="navbar-toggler-icon"></span>    
+    </button>    
+    <div class="collapse navbar-collapse" id="main-navigation">     
+        <ul class="navbar-nav">      
+
+        </ul>    
+    </div>  
+</nav> 
+<body style="background-color: #000000; color: white; text-align: center;">
 
     <form method="post" enctype="multipart/form-data">
 
-        <h2>Informations vendeur :</h2>
+        <h2 style="margin-top: 5%;">Informations vendeur :</h2>
+        <div  style="margin-left: 35%; margin-top: 5%;">
+            <table style="border-collapse: separate; border: 1px solid #000; border-spacing: 15px;">
+              <tr>
+                <td align="right" style="padding-left: 20px;">
+                  <label> <i class="fa fa-user"> Nom :</label> <!-- la classe fa fa permet d'afficher les petits icones devant et après le text --></td>
+                   <td><input type="fname" placeholder="Nom" name="nom"/>
+                   </td> 
+               </tr>
 
-        <table>
-          <tr>
-            <td align="right">
-              <label> <i class="fa fa-user"> Nom :</label> <!-- la classe fa fa permet d'afficher les petits icones devant et après le text -->
-                  <input type="fname" placeholder="Nom" name="nom"/>
-              </td>
-          </tr>
-
-          <tr>
-              <td align="right">
-                <label> <i class="fa fa-user"> Prénom :</label>
-                    <input type="fname" placeholder="prénom" name="prenom"/>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="fichier">Photo de fond :</label></td>
-                <td><input type="file" name="fichier1"></td>
-            </tr>
-            <tr>
-                <td><label for="fichier">Photo de profil :</label></td>
-                <td><input type="file" name="fichier2"></td>
-            </tr>
-           
-        </table>
- <input type="submit" name="formcarte"/>
-    </form>
-
-
-    <?php
-    if(isset($erreur))
-    {
-        echo '<font color="red">' .$erreur."</font>";
-    }
-    ?>
+               <tr>
+                  <td align="right">
+                    <label> <i class="fa fa-user"> Prénom :</label></td>
+                        <td><input type="fname" placeholder="prénom" name="prenom"/></td>
+                        
+                    </tr>
+                    <tr>
+                        <td><label for="fichier">Photo de fond :</label></td>
+                        <td><input type="file" name="fichier1"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="fichier">Photo de profil :</label></td>
+                        <td><input type="file" name="fichier2"></td>
+                    </tr>
+                    <tr><td></td>
+                        <td><input type="submit" name="formcarte"/></td></tr>
+                    </table>
+                </div>
+            </form>
 
 
-</body>
-</html>
+            <?php
+            if(isset($erreur))
+            {
+                echo '<font color="red">' .$erreur."</font>";
+            }
+            require 'footer.php';
+            ?>
+
+
+        </body>
+        </html>

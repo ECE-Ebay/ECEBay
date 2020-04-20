@@ -1,5 +1,7 @@
 <?php
-session_start(); ?>
+session_start();
+
+require 'verif_enchere.php'; ?>
 <!DOCTYPE html>
 <html> 
 <head>  
@@ -7,6 +9,7 @@ session_start(); ?>
 	<meta charset="utf-8">  
 	<meta name="viewport" content="width=device-width, initial-scale=1">   
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">   
+	<link rel="icon" href="Logo ECEBay.png" type="image/gif"> <!-- pour l'icon --> 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>  
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>  
 	<link rel="stylesheet" type="text/css" href="style.css">  
@@ -51,10 +54,11 @@ session_start(); ?>
 			}
 
 			$reponse = $bdd->query('SELECT * FROM items');
-			$req = $bdd->query('SELECT * FROM photos');
+			
 			
 			while ($donnees = $reponse->fetch())
 			{
+				$req = $bdd->query('SELECT * FROM photos');
 				if (isset($_GET['categorie'])&&isset($_GET['type_vente']))  
 				{  
 					$categorie = $_GET['categorie'];
@@ -65,50 +69,34 @@ session_start(); ?>
 					echo "ce membre n'existe pas.";  
 				}  
 				
-				if ($donnees['categorie']==$categorie&&$donnees['type_vente']==$type_vente) {
-					?>
+				if ($donnees['categorie']==$categorie&&$donnees['type_vente']==$type_vente&&$donnees['statut']==0) {
+					$tableau = [];
+					$num = 0;
+					while ($don = $req->fetch())
+					{
+						if ($donnees['id_item']==$don['id_item'])  
+						{  
+							$tableau[$num] = $don['file_url'];
+							$num = $num + 1;
 
-
+						}
+					}					?>
 					<div class="col-sm-12" style="height:250px; border-color:red; ">
 						<div class="col-sm-4" style="float: left; text-align: center;">
-							<div id="myCarousel" class="carousel slide" data-ride="carousel" >
 
-								<!-- The slideshow -->
-								<div class="carousel-inner">
-									<div class="carousel-item active">
-										<?php while ($don = $req->fetch())
-										{
-											if ($donnees['id_item']==$don['id_item'])  
-											{  
-												echo('<img style="height: 200px; width: auto;" src="' . $don['src'] . '" />');
-												$car = $car + 1;
-											} }?>
-										</div>
-										
-									</div>
-
-									<!-- Carousel controls -->
-									<?php if($car>1) { ?>
-									<a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
-										<span class="carousel-control-prev-icon"></span>
-									</a>
-									<a class="carousel-control-next" href="#myCarousel" data-slide="next">
-										<span class="carousel-control-next-icon"></span>
-									</a>
-								<?php } ?>
-								</div>
-							</div>
-							<p style="color: white;"><br>Marque: <?php echo $donnees['marque']; ?><br><br>Modèle: <?php echo $donnees['modele']; ?><br><br>Qualitées: <?php echo $donnees['description']; ?><br><br>Prix: <?php echo $donnees['prix_initial']; ?></p>
-						</div>
+							<?php require 'carousel.php' ?>
 
 
 
-						<?php
-					}}
-					$reponse->closeCursor();
-					?>
-
-				</div>
+							
+					</div>
+					<p style="color: white;"><br>Marque: <?php echo $donnees['marque']; ?><br><br>Modèle: <?php echo $donnees['modele']; ?><br><br>Qualitées: <?php echo $donnees['description']; ?><br><br>Prix: <?php echo $donnees['prix_initial']; ?></p>
+				</div><?php
+						}}
+						$reponse->closeCursor();
+						?>
 			</div>
-		</body> 
-		</html>
+		</div>
+		<?php require 'footer.php' ?>
+	</body> 
+	</html>

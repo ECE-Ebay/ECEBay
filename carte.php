@@ -2,6 +2,8 @@
 
 session_start();
 
+require 'verif_enchere.php';
+
 $id_membres=$_SESSION['id_membres'];
 
 $bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
@@ -9,34 +11,35 @@ $bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
 if(isset($_POST['formcarte']))
 {
     //déclare les variables
-    $nom = htmlspecialchars($_POST['nom']);
-    $prenom = htmlspecialchars($_POST['prenom']);
-    $mail = htmlspecialchars($_POST['email']);
-    $adresse = htmlspecialchars($_POST['adresse']);
-    $ville = htmlspecialchars($_POST['ville']);
-    $numtel = htmlspecialchars($_POST['numtel']);
-    $zip = htmlspecialchars($_POST['zip']);
-    $numerocarte = htmlspecialchars($_POST['numerocarte']);
-    $nomcarte = htmlspecialchars($_POST['nomcarte']);
-    $moicarte = htmlspecialchars($_POST['moicarte']);
-    $cvv = htmlspecialchars($_POST['cvv']);
-    $anneecarte = htmlspecialchars($_POST['anneecarte']);
+  $nom = htmlspecialchars($_POST['nom']);
+  $prenom = htmlspecialchars($_POST['prenom']);
+  $mail = htmlspecialchars($_POST['email']);
+  $adresse = htmlspecialchars($_POST['adresse']);
+  $ville = htmlspecialchars($_POST['ville']);
+  $numtel = htmlspecialchars($_POST['numtel']);
+  $zip = htmlspecialchars($_POST['zip']);
+  $numerocarte = htmlspecialchars($_POST['numerocarte']);
+  $nomcarte = htmlspecialchars($_POST['nomcarte']);
+  $moicarte = htmlspecialchars($_POST['moicarte']);
+  $cvv = htmlspecialchars($_POST['cvv']);
+  $anneecarte = htmlspecialchars($_POST['anneecarte']);
+  $argent=1000000;
 
     //permet de verifier que l'utilisateur a bien complété tous les champs requis
-    if(!empty($_POST['nom']) AND !empty($_POST['prenom']) AND !empty($_POST['email']) AND !empty($_POST['adresse'])  AND !empty($_POST['ville']) AND !empty($_POST['numtel']) AND !empty($_POST['zip']) AND !empty($_POST['numerocarte']) AND !empty($_POST['nomcarte']) AND !empty($_POST['moicarte']) AND !empty($_POST['anneecarte']) AND !empty($_POST['cvv']))
-    {
+  if(!empty($_POST['nom']) AND !empty($_POST['prenom']) AND !empty($_POST['email']) AND !empty($_POST['adresse'])  AND !empty($_POST['ville']) AND !empty($_POST['numtel']) AND !empty($_POST['zip']) AND !empty($_POST['numerocarte']) AND !empty($_POST['nomcarte']) AND !empty($_POST['moicarte']) AND !empty($_POST['anneecarte']) AND !empty($_POST['cvv']))
+  {
 
 
       //prepare la requète pour mettre les infos entrées par l'utilisateur dans la bdd
-      $insertmbr= $bdd->prepare("INSERT INTO carte_banquaire(id_membre nom, prenom, email, adresse, ville, numtel, zip, numerocarte, nomcarte, moicarte, anneecarte, cvv)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $insertmbr= $bdd->prepare("INSERT INTO carte_banquaire(id_membre, nom, prenom, email, adresse, ville, numtel, zip, numerocarte, nomcarte, moicarte, anneecarte, cvv, argent)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       //execute la requète précédente
-      $insertmbr->execute(array($id_membres, $nom, $prenom, $mail, $adresse, $ville, $numtel, $zip, $numerocarte, $nomcarte, $moicarte, $anneecarte, $cvv));
-      header("Location: connexion.php");
-    }
-    else
-    {
-        $erreur ="VEUILLEZ COMPLETER TOUS LES CHAMPS";
-    }
+    $insertmbr->execute(array($id_membres, $nom, $prenom, $mail, $adresse, $ville, $numtel, $zip, $numerocarte, $nomcarte, $moicarte, $anneecarte, $cvv, $argent));
+    header("Location: connexion.php");
+  }
+  else
+  {
+    $erreur ="VEUILLEZ COMPLETER TOUS LES CHAMPS";
+  }
 }
 
 ?>
@@ -45,37 +48,56 @@ if(isset($_POST['formcarte']))
 
 <html>
 <head>
-<meta charset="utf-8">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- lien pour afficher les petites icones des carte accéptées et les petits icones dans adresse de livraison-->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">   
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- lien pour afficher les petites icones des carte accéptées et les petits icones dans adresse de livraison-->
+  <link rel="icon" href="Logo ECEBay.png" type="image/gif">
+  <!-- pour l'icon -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>  
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>  
+  <link rel="stylesheet" type="text/css" href="style.css"> 
 </head>
-<body>
+<nav class="navbar navbar-expand-md">    
+    <img src="Logo ECEBay.png" alt="AllFruits Logo" style="width:100px;height:100px;">
+    <button class="navbar-toggler navbar-dark" type="button" datatoggle="collapse" data-target="#main-navigation">     
+        <span class="navbar-toggler-icon"></span>    
+    </button>    
+    <div class="collapse navbar-collapse" id="main-navigation">     
+        <ul class="navbar-nav">      
 
-<h1>PAIEMENT</h1>
+        </ul>    
+    </div>  
+</nav> 
+<body style="background-color: #000000; color: white; text-align: center;">
+
+  <h1>INFORMATIONS ACHETEUR</h1>
 
 
-      <form method="post">
-      
-        <h3>Adresse de livraison :</h3>
+  <form method="post">
 
-          <table>
-              <tr>
-                <td align="right">
-                  <label> <i class="fa fa-user"> Nom :</label> <!-- la classe fa fa permet d'afficher les petits icones devant et après le text -->
-                  <input type="fname" placeholder="Nom" name="nom"/>
-              </td>
-            </tr>
+    <h3>Adresse de livraison :</h3>
 
-            <tr>
-              <td align="right">
-                <label> <i class="fa fa-user"> Prénom :</label>
-                <input type="fname" placeholder="prénom" name="prenom"/>
-              </td>
-            </tr>
+    <div  style="margin-left: 35%; margin-top: 3%;">
+    <table>
+      <tr>
+        <td align="right">
+          <label> <i class="fa fa-user"> Nom :</label> <!-- la classe fa fa permet d'afficher les petits icones devant et après le text -->
+            <input type="fname" placeholder="Nom" name="nom"/>
+          </td>
+        </tr>
 
-            <tr>
-              <td align="right">
-                <label> <i class="fa fa-envelope"> Email :</label>
+        <tr>
+          <td align="right">
+            <label> <i class="fa fa-user"> Prénom :</label>
+              <input type="fname" placeholder="prénom" name="prenom"/>
+            </td>
+          </tr>
+
+          <tr>
+            <td align="right">
+              <label> <i class="fa fa-envelope"> Email :</label>
                 <input type="email" placeholder="nom@gmail.com" name="email"/>
               </td>
             </tr>
@@ -84,100 +106,102 @@ if(isset($_POST['formcarte']))
             <tr>
               <td align="right">
                 <label> <i class="fa fa-address-card-o"> Adresse :</label>
-                <input type="text" placeholder="adresse de livraison" name="adresse"/>
-              </td>
-            </tr>
+                  <input type="text" placeholder="adresse de livraison" name="adresse"/>
+                </td>
+              </tr>
 
-            <tr>
-              <td align="right">
-                <label> <i class="fa fa-institution"> Ville :</label>
-                <input type="text" placeholder="ex: Paris" name="ville"/>
-              </td>
-            </tr>
-          
-            <tr>
-              <td align="right">
-                <label>N°Telphone :</label>
-                <input type="text" placeholder="ex: 0102030405" pattern="[0-9]{10}" name="numtel"/>
-              </td>
-            </tr>
+              <tr>
+                <td align="right">
+                  <label> <i class="fa fa-institution"> Ville :</label>
+                    <input type="text" placeholder="ex: Paris" name="ville"/>
+                  </td>
+                </tr>
 
-            <tr>
-              <td align="right">
-                <label>Zip :</label>
-                <input type="text" placeholder="zip" pattern="[0-9]{5}" name="zip"/>
-              </td>
-            </tr>
-          </table>
+                <tr>
+                  <td align="right">
+                    <label>N°Telphone :</label>
+                    <input type="text" placeholder="ex: 0102030405" pattern="[0-9]{10}" name="numtel"/>
+                  </td>
+                </tr>
 
-
-
-            <h3>Paiement :</h3>
-            <label for="fname">Cartes acceptées :</label>
-            <div class="icon-container">
-              <i class="fa fa-cc-visa" style="color:navy;"></i>
-              <i class="fa fa-cc-amex" style="color:blue;"></i>
-              <i class="fa fa-cc-mastercard" style="color:red;"></i>
-              <i class="fa fa-cc-discover" style="color:orange;"></i>
+                <tr>
+                  <td align="right">
+                    <label>Zip :</label>
+                    <input type="text" placeholder="zip" pattern="[0-9]{5}" name="zip"/>
+                  </td>
+                </tr>
+              </table>
             </div>
 
 
 
-            <table>
+              <h3>Paiement :</h3>
+              <label for="fname">Cartes acceptées :</label>
+              <div class="icon-container">
+                <i class="fa fa-cc-visa" style="color:navy;"></i>
+                <i class="fa fa-cc-amex" style="color:blue;"></i>
+                <i class="fa fa-cc-mastercard" style="color:red;"></i>
+                <i class="fa fa-cc-discover" style="color:orange;"></i>
+              </div>
+
+
+              <div  style="margin-left: 35%; margin-top: 3%;">
+              <table>
+                <tr>
+                  <td align="right">
+                    <label>Numéro de la carte :</label>
+                    <input type="text" pattern="[0-9]{13,16}" name="numerocarte" placeholder="ex: 1111-2222-3333-4444"> <!-- pattern permet de faire en sorte qu'il y ai une erreur qui s'affiche si l'utilisateur ne rentre pas entre 13 et 16 chiffres compris entre 0 et 9 -->
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td align="right">
+                    <label>Titulaire de la carte :</label>
+                    <input type="text" placeholder="ex: Fieux Louis" name="nomcarte"/>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td align="right">
+                    <label>Moi d'expiration :</label>
+                    <input type="text" placeholder="ex: 07" pattern="[0-12]{2}" name="moicarte"/>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td align="right">
+                    <label>Année d'expiration :</label>
+                    <input type="text" placeholder="ex: 2021" pattern="[0-9]{4}" name="anneecarte"/>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td align="right">
+                    <label>CVC/CVV/CID :</label>
+                    <input type="text" required="" pattern="[0-9]{3,4}" name="cvv" placeholder="ex: 123">
+                  </td>
+                </tr>
+              </table>
+            </div>
+              <br>
               <tr>
-                <td align="right">
-                  <label>Numéro de la carte :</label>
-                  <input type="text" pattern="[0-9]{13,16}" name="numerocarte" placeholder="ex: 1111-2222-3333-4444"> <!-- pattern permet de faire en sorte qu'il y ai une erreur qui s'affiche si l'utilisateur ne rentre pas entre 13 et 16 chiffres compris entre 0 et 9 -->
-                  
+                <td></td>
+                <td>    
+                  <input type="submit" name='formcarte' value="Continuer"/>
                 </td>
               </tr>
 
-              <tr>
-                <td align="right">
-                  <label>Titulaire de la carte :</label>
-                  <input type="text" placeholder="ex: Fieux Louis" name="nomcarte"/>
-                </td>
-              </tr>
-
-              <tr>
-                <td align="right">
-                  <label>Moi d'expiration :</label>
-                  <input type="text" placeholder="ex: 07" pattern="[0-12]{2}" name="moicarte"/>
-                </td>
-              </tr>
-
-              <tr>
-                <td align="right">
-                  <label>Année d'expiration :</label>
-                  <input type="text" placeholder="ex: 2021" pattern="[0-9]{4}" name="anneecarte"/>
-                </td>
-              </tr>
-            
-              <tr>
-                <td align="right">
-                  <label>CVC/CVV/CID :</label>
-                 <input type="text" required="" pattern="[0-9]{3,4}" name="cvv" placeholder="ex: 123">
-                </td>
-              </tr>
-            </table>
-       <br>
-        <tr>
-        <td></td>
-        <td>    
-          <input type="submit" name='formcarte' value="Continuer"/>
-        </td>
-        </tr>
-
-      </form>
+            </form>
 
 
-      <?php
-      if(isset($erreur))
-      {
-        echo '<font color="red">' .$erreur."</font>";
-      }
-      ?>
+            <?php
+            if(isset($erreur))
+            {
+              echo '<font color="red">' .$erreur."</font>";
+            }
+            ?>
 
 
-</body>
-</html>
+          </body>
+          </html>

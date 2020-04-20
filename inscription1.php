@@ -1,6 +1,11 @@
 <?php
 
-$bdd = new PDO('mysql:host=localhost;dbname=espace_membre;charset=utf8','root',''); //accès à la bdd
+session_start();
+
+require 'verif_enchere.php';
+
+$bdd = new PDO('mysql:host=localhost;dbname=test_items;charset=utf8','root','');
+
 
 if(isset($_POST['forminscription']))
 {
@@ -15,51 +20,60 @@ if(isset($_POST['forminscription']))
     if(!empty($_POST['pseudo']) AND !empty($_POST['mail']) AND!empty($_POST['mail2'])  AND !empty($_POST['mdp']) AND !empty($_POST['mdp2']))
     {
 
-            if ($mail==$mail2)  //verifie que les deux mails correspondent bien
+
+        if ($mail==$mail2) //verifie que les deux mails correspondent bien
+        {
+            if(filter_var($mail, FILTER_VALIDATE_EMAIL)) //permet de verifier que l'adresse mail est bien valide
             {
-                if(filter_var($mail, FILTER_VALIDATE_EMAIL))    //permet de verifier que l'adresse mail est bien valide
+                //permet de verifier si le pseudo existe déjà dans la bdd
+                $reqpseudo=$bdd->prepare("SELECT * FROM membres WHERE pseudo=?");
+                $reqpseudo->execute(array($pseudo));
+                $pseudoexist=$reqpseudo->rowCount();
+                if ($pseudoexist==0)
                 {
-
-                    //permet de verifier si le pseudo existe déjà dans la bdd
-                    $reqpseudo=$bdd->prepare("SELECT * FROM membres WHERE pseudo=?");
-                    $reqpseudo->execute(array($pseudo));
-                    $pseudoexist=$reqpseudo->rowCount();
-
-                    if ($pseudoexist==0)
-                    {
                         //permet de verifier si le mail existe déjà dans la bdd
-                        $reqmail=$bdd->prepare("SELECT * FROM membres WHERE mail=?");
-                        $reqmail->execute(array($mail));
-                        $mailexist=$reqmail->rowCount();
-
-                         if($mailexist==0)
+                    $reqmail=$bdd->prepare("SELECT * FROM membres WHERE mail=?");
+                    $reqmail->execute(array($mail));
+                    $mailexist=$reqmail->rowCount();
+                    if($mailexist==0)
+                    {
+                        if($mdp==$mdp2) //verifie que les deux mdp correspondent
                         {
-                            if($mdp==$mdp2) //verifie que les deux mdp correspondent bien
+                           $insertmbr= $bdd->prepare("INSERT INTO membres(pseudo, mail, motdepasse)VALUES(?, ?, ?)");
+                            //prepare une requète qui va envoyé les données remplies par l'utilisateur dans la bdd
+                            $insertmbr->execute(array($pseudo, $mail, $mdp));   //execution de la requète précédente;
+
+
+                            $reponse = $bdd->query('SELECT * FROM membres');
+
+                            while ($donnees = $reponse->fetch())
                             {
-                                $insertmbr= $bdd->prepare("INSERT INTO membres(pseudo, mail, motdepasse)VALUES(?, ?, ?)");
-                                //prepare une requète qui va envoyé les données remplies par l'utilisateur dans la bdd
-                                $insertmbr->execute(array($pseudo, $mail, $mdp));   //execution de la requète précédente
-                                $erreur = "Votre compte a bien été créé. <a href=\"connexion.php\">Me connecter</a>";
-                            }
-                            else
-                            {
-                                $erreur="Vos mots de passe ne correspondent pas";
+                                if ($donnees['pseudo']==$pseudo&&$donnees['mail']==$mail&&$donnees['motdepasse']==$mdp) 
+                                {
+                                    $_SESSION['id_membres']=$donnees['id_utilisateur'];
+                                    header("Location: option.php?id_membres=".$_SESSION['id_membres']);
+                                }
                             }
                         }
                         else
                         {
-                            $erreur="Adresse mail déjà utilisée";
+                            $erreur="Vos mots de passe ne correspondent pas";
                         }
                     }
                     else
                     {
-                        $erreur="Pseudo déjà utilisé";
+                        $erreur="Adresse mail déjà utilisée";
                     }
                 }
                 else
                 {
-                    $erreur="Vos adresses mails ne correspondent pas";
+                    $erreur="Pseudo déjà utilisé";
                 }
+            }
+            else
+            {
+                $erreur="Vos adresses mails ne correspondent pas";
+            }
         }
         else
         {
@@ -76,67 +90,89 @@ if(isset($_POST['forminscription']))
 ?>
 
 <html>
-    <head>
-        <title>login page</title>
-        <meta charset="utf-8">
-    </head>
-    <body>
+<head>
+    <title>login page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">   
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">  
+        <link rel="icon" href="Logo ECEBay.png" type="image/gif"> <!-- pour l'icon -->  
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>  
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>  
+        <link rel="stylesheet" type="text/css" href="style.css"> 
+</head>
+<body>
 
-        <div align="center">
-            <h2>Inscription : </h2>
+    <nav class="navbar navbar-expand-md">    
+            <img src="Logo ECEBay.png" alt="AllFruits Logo" style="width:100px;height:100px;">
+                <button class="navbar-toggler navbar-dark" type="button" datatoggle="collapse" data-target="#main-navigation">     
+                    <span class="navbar-toggler-icon"></span>    
+                </button>    
+            <div class="collapse navbar-collapse" id="main-navigation">     
+                <ul class="navbar-nav">      
 
-            <br /><br />
-            <form method="POST" action="">
-                <table>
-                    <tr>
-                        <td align="right">
+                </ul>    
+            </div>  
+        </nav> 
+
+        <body style="background-color: #111111; color: #c1c1c1">
+    <div align="center">
+        <h2>Inscription : </h2>
+
+        <br /><br />
+        <form method="POST" action="">
+            <table>
+                <tr>
+                    <td align="right">
                         <label> Pseudo :</label>
-                        <input type="text" placeholder="Votre pseudo" name="pseudo" value="<?php if(isset($pseudo)) {echo $pseudo; }?>"/>       <!-- ce qui est dans value permet de remplire automatiquement le champs en question si une erreur apparait lors de l'inscription (ex : adresse mail non valide) -->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right">
+                        <input type="text" placeholder="Votre pseudo" name="pseudo" value="<?php if(isset($pseudo)) {echo $pseudo; }?>"/> <!-- ce qui est dans value permet de remplire automatiquement le champs en question si une erreur apparait lors de l'inscription (ex : adresse mail non valide) -->
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
                         <label> Email :</label>
                         <input type="email" placeholder="Votre mail" name="mail" value="<?php if(isset($mail)) {echo $mail; }?>"/>
-                        </td>
-                    </tr>
-                     <tr>
-                        <td align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
                         <label> Confirmer votre Email :</label>
                         <input type="email" placeholder="Confirmez votre mail" name="mail2" value="<?php if(isset($mail2)) {echo $mail2; }?>"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
                         <label> Mot de passe :</label>
                         <input type="password" placeholder="votre mdp" name="mdp"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
                         <label> Confirmer le mot de passe :</label>
                         <input type="password" placeholder="Confirmez votre mdp" name="mdp2"/>
-                        </td>
-                    </tr>
+                    </td>
+                </tr>
 
-                </table>
-                <br>
-                    <tr>
-                        <td></td>
-                        <td>    
-                            <input type="submit" name='forminscription' value="je m'inscris"/>
-                            <p>Déjà inscrit ?<a href=connexion.php>Me connecter</a> </p>
+            </table>
+            <br>
 
-                        </td>
-                    </tr>
-            </form>
-            <?php
-            if(isset($erreur))
-            {
-                echo '<font color="red">' .$erreur."</font>";
-            }
-            ?>
+            <tr>
+                <td></td>
+                <td>    
+                    <input type="submit" name='forminscription' value="Suite"/>
+                    <p>Déjà inscrit ?<a href=connexion.php>Me connecter</a> </p>
+                </td>
+            </tr>
+        </form>
+        <?php
+        if(isset($erreur))
+        {
+            echo '<font color="red">' .$erreur."</font>";
+        }
+        ?>
 
-        </div>
+    </div>
+</body>
+
+<?php require 'footer.php' ?>
 </body>
 </html>
